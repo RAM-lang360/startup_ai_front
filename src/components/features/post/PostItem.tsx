@@ -65,16 +65,6 @@ export const PostItem: React.FC<PostItemProps> = ({
   const [replies, setReplies] = useState<Post[]>(post.replies || []);
   const [loadingReplies, setLoadingReplies] = useState<boolean>(false);
 
-  const formatWireframeDate = (dateStr: string) => {
-    try {
-      const d = new Date(dateStr);
-      if (isNaN(d.getTime())) return dateStr;
-      return d.toString().split(' GMT')[0]; // Format like 'Sat Aug 01 2026 20:22:13'
-    } catch (_) {
-      return dateStr;
-    }
-  };
-
   const handleToggleExpand = async (e: React.MouseEvent) => {
     e.stopPropagation();
     if (!isExpanded && (!replies || replies.length === 0)) {
