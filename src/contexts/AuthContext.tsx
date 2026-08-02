@@ -48,20 +48,20 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         if (newNotif.userId === user.id) {
           const targetId = newNotif.parentId || newNotif.messageId || newNotif.postId;
           if (targetId) {
+            const toastId = `notif-${newNotif.id}`;
             toast(
-              (t) => (
-                <div
-                  onClick={() => {
-                    toast.dismiss(t.id);
-                    navigate(`/post/${targetId}`, { state: { highlightReplyId: newNotif.messageId || newNotif.postId } });
-                  }}
-                  className="cursor-pointer hover:underline flex items-center space-x-2"
-                >
-                  <span>🔔</span>
-                  <span>{newNotif.content}</span>
-                </div>
-              ),
+              <div
+                onClick={() => {
+                  toast.dismiss(toastId);
+                  navigate(`/post/${targetId}`, { state: { highlightReplyId: newNotif.messageId || newNotif.postId } });
+                }}
+                className="cursor-pointer hover:underline flex items-center space-x-2 text-sm text-stone-700 dark:text-stone-200"
+              >
+                <span>🔔</span>
+                <span>{newNotif.content}</span>
+              </div>,
               {
+                id: toastId,
                 duration: 6000,
               }
             );
