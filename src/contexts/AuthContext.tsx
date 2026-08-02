@@ -42,9 +42,23 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       withCredentials: true,
     });
 
+    eventSource.onopen = () => {
+      console.log('SSE connection successfully opened');
+    };
+
+    eventSource.onerror = (err) => {
+      console.error('SSE connection error:', err);
+      // Optional: notify via toast to let user know in UI during debug
+      toast.error('リアルタイム接続に失敗しました。再接続を試みています...', {
+        id: 'sse-error',
+        duration: 3000,
+      });
+    };
+
     eventSource.addEventListener('notification', (event) => {
       try {
         const newNotif = JSON.parse(event.data);
+        console.log('Received notification via SSE:', newNotif);
         if (newNotif.userId === user.id) {
           const targetId = newNotif.parentId || newNotif.messageId || newNotif.postId;
           if (targetId) {
@@ -71,6 +85,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
               duration: 6000,
             });
           }
+        } else {
+          console.log(`Notification ignored. Recipient ID ${newNotif.userId} does not match current user ID ${user.id}`);
         }
       } catch (err) {
         console.error('Failed to parse global real-time notification:', err);
