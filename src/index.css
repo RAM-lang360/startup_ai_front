@@ -1,0 +1,89 @@
+@import "tailwindcss/base";
+@import "tailwindcss/components";
+@import "tailwindcss/utilities";
+
+@layer base {
+  body {
+    @apply bg-stone-50 text-stone-900 antialiased min-h-screen;
+    font-family: 'Outfit', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    background-color: #f7f9f6;
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-page-in {
+  animation: fadeInUp 0.45s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* Premium App Layout and native styling */
+.wireframe-container {
+  max-width: 500px;
+  margin: 0 auto;
+  min-height: 100vh;
+  background-color: #ffffff;
+  border-left: 1px solid #e3e8e2;
+  border-right: 1px solid #e3e8e2;
+  box-shadow: 0 4px 30px rgba(78, 168, 90, 0.04);
+}
+
+.post-bubble {
+  border: 1px solid #e3e8e2;
+  border-radius: 20px;
+  padding: 16px;
+  background-color: #ffffff;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.02);
+  transition: all 0.2s ease;
+}
+
+.post-bubble:hover {
+  border-color: #4ea85a;
+  box-shadow: 0 6px 18px rgba(78, 168, 90, 0.06);
+}
+
+.avatar-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background-color: #eaf5eb;
+  border: 1px solid #c9e8cd;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  box-shadow: 0 2px 8px rgba(78, 168, 90, 0.08);
+}
+
+.cloud-header {
+  height: 140px;
+  background: linear-gradient(135deg, #c9e8cd 0%, #eaf5eb 100%);
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  border-radius: 20px;
+  border: 1px solid #c9e8cd;
+}
+
+@keyframes slideInLeft {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+.animate-slide-in-left {
+  animation: slideInLeft 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
