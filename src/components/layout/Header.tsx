@@ -1,8 +1,7 @@
 import React from 'react';
 import { useAuth } from '../../contexts/AuthContext';
 import { Avatar } from '../ui/Avatar';
-import { Link, useNavigate } from 'react-router-dom';
-import { Bell, LogOut, PenSquare } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 interface HeaderProps {
   onOpenCreatePost?: () => void;
@@ -11,13 +10,8 @@ interface HeaderProps {
 }
 
 export const Header: React.FC<HeaderProps> = ({ onOpenCreatePost, onOpenMenu, unreadCount = 0 }) => {
-  const { user, logout } = useAuth();
-  const navigate = useNavigate();
+  const { user } = useAuth();
 
-  const handleLogout = async () => {
-    await logout();
-    navigate('/login');
-  };
 
   return (
     <header className="sticky top-0 z-30 bg-white/80 dark:bg-stone-900/80 backdrop-blur-md border-b border-stone-150/80 dark:border-stone-800/80 px-4 py-3 flex items-center justify-between transition-colors duration-300">

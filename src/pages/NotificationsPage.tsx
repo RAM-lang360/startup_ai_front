@@ -4,9 +4,29 @@ import { Notification } from '../types';
 import { MainLayout } from '../components/layout/MainLayout';
 import { apiClient, API_BASE_URL } from '../lib/apiClient';
 import { Avatar } from '../components/ui/Avatar';
-import { Check } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
 import { AnimatedPage } from '../components/layout/AnimatedPage';
+
+const sampleNotifications: Notification[] = [
+  {
+    id: 'n1',
+    userId: 'u1',
+    type: 'REPLY',
+    content: 'user_a さんがあなたの投稿に返信しました',
+    isRead: false,
+    createdAt: new Date().toISOString(),
+    actor: { id: 'u2', username: 'user_a', name: 'user_a', avatarMood: '😐' },
+  },
+  {
+    id: 'n2',
+    userId: 'u1',
+    type: 'LIKE',
+    content: 'user_b さんがあなたの投稿をいいねしました',
+    isRead: true,
+    createdAt: new Date().toISOString(),
+    actor: { id: 'u3', username: 'user_b', name: 'user_b', avatarMood: '😐' },
+  },
+];
 
 export const NotificationsPage: React.FC = () => {
   const navigate = useNavigate();
@@ -14,26 +34,6 @@ export const NotificationsPage: React.FC = () => {
   const [notifications, setNotifications] = useState<Notification[]>([]);
   const [loading, setLoading] = useState(true);
 
-  const sampleNotifications: Notification[] = [
-    {
-      id: 'n1',
-      userId: 'u1',
-      type: 'REPLY',
-      content: 'user_a さんがあなたの投稿に返信しました',
-      isRead: false,
-      createdAt: new Date().toISOString(),
-      actor: { id: 'u2', username: 'user_a', name: 'user_a', avatarMood: '😐' },
-    },
-    {
-      id: 'n2',
-      userId: 'u1',
-      type: 'LIKE',
-      content: 'user_b さんがあなたの投稿をいいねしました',
-      isRead: true,
-      createdAt: new Date().toISOString(),
-      actor: { id: 'u3', username: 'user_b', name: 'user_b', avatarMood: '😐' },
-    },
-  ];
 
   useEffect(() => {
     const fetchNotifications = async () => {

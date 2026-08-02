@@ -7,47 +7,48 @@ import { CreatePostModal } from '../components/features/post/CreatePostModal';
 import { AnimatedPage } from '../components/layout/AnimatedPage';
 import toast from 'react-hot-toast';
 
+// Mock initial wireframe posts if backend is fresh
+const samplePosts: Post[] = [
+  {
+    id: 'p1',
+    content:
+      'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+    createdAt: 'Sat Aug 01 2026 20:22:13',
+    userId: 'u1',
+    user: { id: 'u1', username: 'username', name: 'me', avatarMood: '😊' },
+    redLikesCount: 100,
+    orangeLikesCount: 1,
+    giftsCount: 0,
+  },
+  {
+    id: 'p2',
+    content:
+      'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+    createdAt: 'Sat Aug 01 2026 20:22:13',
+    userId: 'u2',
+    user: { id: 'u2', username: 'username', name: 'user_a', avatarMood: '😊' },
+    redLikesCount: 100,
+    orangeLikesCount: 1,
+    giftsCount: 0,
+  },
+  {
+    id: 'p3',
+    content:
+      'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+    createdAt: 'Sat Aug 01 2026 20:22:13',
+    userId: 'u3',
+    user: { id: 'u3', username: 'username', name: 'user_c', avatarMood: '😊' },
+    redLikesCount: 100,
+    orangeLikesCount: 1,
+    giftsCount: 0,
+  },
+];
+
 export const TimelinePage: React.FC = () => {
   const [posts, setPosts] = useState<Post[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [replyTargetPost, setReplyTargetPost] = useState<Post | null>(null);
 
-  // Mock initial wireframe posts if backend is fresh
-  const samplePosts: Post[] = [
-    {
-      id: 'p1',
-      content:
-        'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
-      createdAt: 'Sat Aug 01 2026 20:22:13',
-      userId: 'u1',
-      user: { id: 'u1', username: 'username', name: 'me', avatarMood: '😊' },
-      redLikesCount: 100,
-      orangeLikesCount: 1,
-      giftsCount: 0,
-    },
-    {
-      id: 'p2',
-      content:
-        'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
-      createdAt: 'Sat Aug 01 2026 20:22:13',
-      userId: 'u2',
-      user: { id: 'u2', username: 'username', name: 'user_a', avatarMood: '😊' },
-      redLikesCount: 100,
-      orangeLikesCount: 1,
-      giftsCount: 0,
-    },
-    {
-      id: 'p3',
-      content:
-        'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
-      createdAt: 'Sat Aug 01 2026 20:22:13',
-      userId: 'u3',
-      user: { id: 'u3', username: 'username', name: 'user_c', avatarMood: '😊' },
-      redLikesCount: 100,
-      orangeLikesCount: 1,
-      giftsCount: 0,
-    },
-  ];
 
   const fetchPosts = useCallback(async () => {
     try {

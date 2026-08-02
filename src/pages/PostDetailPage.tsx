@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { useParams, useLocation, Link } from 'react-router-dom';
 import { Post } from '../types';
 import { MainLayout } from '../components/layout/MainLayout';
@@ -8,6 +8,43 @@ import { AnimatedPage } from '../components/layout/AnimatedPage';
 import { CreatePostModal } from '../components/features/post/CreatePostModal';
 import toast from 'react-hot-toast';
 
+// Wireframe 3 reply thread mock data
+const getSampleThread = (id: string): Post => ({
+  id: id || 'me_post',
+  content:
+    'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+  createdAt: 'Sat Aug 01 2026 20:53:21',
+  userId: 'u1',
+  user: { id: 'u1', username: 'username', name: 'me', avatarMood: '😊' },
+  redLikesCount: 100,
+  orangeLikesCount: 0,
+  giftsCount: 0,
+  replies: [
+    {
+      id: 'r1',
+      content:
+        'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+      createdAt: 'Sat Aug 01 2026 20:53:21',
+      userId: 'u2',
+      user: { id: 'u2', username: 'username', name: 'user_a', avatarMood: '😐' },
+      redLikesCount: 100,
+      orangeLikesCount: 0,
+      giftsCount: 0,
+    },
+    {
+      id: 'r2',
+      content:
+        'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+      createdAt: 'Sat Aug 01 2026 20:53:21',
+      userId: 'u3',
+      user: { id: 'u3', username: 'username', name: 'user_b', avatarMood: '😐' },
+      redLikesCount: 100,
+      orangeLikesCount: 0,
+      giftsCount: 0,
+    },
+  ],
+});
+
 export const PostDetailPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const location = useLocation();
@@ -16,53 +53,18 @@ export const PostDetailPage: React.FC = () => {
   // Retrieve reply ID to highlight from location state
   const highlightReplyId = location.state?.highlightReplyId;
 
-  // Wireframe 3 reply thread mock data
-  const sampleThread: Post = {
-    id: id || 'me_post',
-    content:
-      'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
-    createdAt: 'Sat Aug 01 2026 20:53:21',
-    userId: 'u1',
-    user: { id: 'u1', username: 'username', name: 'me', avatarMood: '😊' },
-    redLikesCount: 100,
-    orangeLikesCount: 0,
-    giftsCount: 0,
-    replies: [
-      {
-        id: 'r1',
-        content:
-          'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
-        createdAt: 'Sat Aug 01 2026 20:53:21',
-        userId: 'u2',
-        user: { id: 'u2', username: 'username', name: 'user_a', avatarMood: '😐' },
-        redLikesCount: 100,
-        orangeLikesCount: 0,
-        giftsCount: 0,
-      },
-      {
-        id: 'r2',
-        content:
-          'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
-        createdAt: 'Sat Aug 01 2026 20:53:21',
-        userId: 'u3',
-        user: { id: 'u3', username: 'username', name: 'user_b', avatarMood: '😐' },
-        redLikesCount: 100,
-        orangeLikesCount: 0,
-        giftsCount: 0,
-      },
-    ],
-  };
-
   const [replyTargetPost, setReplyTargetPost] = useState<Post | null>(null);
 
-  const fetchPostDetail = async () => {
+  const fetchPostDetail = useCallback(async () => {
+    if (!id) return;
     try {
       let p = await apiClient<Post>(`/posts/${id}`);
       setPost(p);
     } catch (_) {
-      setPost(sampleThread);
+      setPost(getSampleThread(id));
     }
-  };
+  }, [id]);
+
 
   useEffect(() => {
     fetchPostDetail();
@@ -93,7 +95,7 @@ export const PostDetailPage: React.FC = () => {
     return () => {
       eventSource.close();
     };
-  }, [id]);
+  }, [id, fetchPostDetail]);
 
   const handleReplySubmit = async (content: string) => {
     if (!replyTargetPost) return;
